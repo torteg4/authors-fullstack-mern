@@ -22,17 +22,17 @@ module.exports = {
     create: (req,res) => {
         Author.create(req.body)
             .then((newAuthor) => res.json(newAuthor))
-            .catch((err) =>
-                res.json({message:"Something went wrong with create", error:err})
+            .catch(err =>
+                res.status(400).json(err)
         );
     },
 
     update: (req,res) => {
-        Author.findByIdAndUpdate(req.params.id, req.body)
-            .then((updatedAuthor) => res.json(updatedAuthor))
+        Author.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        .then((updatedAuthor) => res.json(updatedAuthor))
             .catch(err =>
-                res.json({message:"Something went wrong with updating author", error:err})
-            );
+                res.status(400).json(err)
+            )
     },
 
     destroy: (req,res) => {
