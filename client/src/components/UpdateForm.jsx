@@ -8,7 +8,7 @@ const UpdateForm = (props) => {
     const [name, setName] = useState("");
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]); 
-    // const [authorNotFound, setAuthorNotFound] = useState("");
+    const [authorNotFound, setAuthorNotFound] = useState(false);
 
     useEffect(() => {
         axios.get("http://localhost:8000/api/authors/" + id)
@@ -17,7 +17,7 @@ const UpdateForm = (props) => {
             })
             .catch((err) => {
                 console.log("Something went wrong with updating through button", err);
-                // setAuthorNotFound("No author found with that id");
+                setAuthorNotFound(true);
             });
     }, []);
 
@@ -49,11 +49,12 @@ const UpdateForm = (props) => {
         <div>
             <Link to={"/authors"}> Home</Link>
             <h5>Edit this Author</h5>
+            
+            {authorNotFound ? <h2>{authorNotFound} <Link to ={"/authors/new"}>Go here to create author!</Link></h2> : null}
 
             <form onSubmit = { onSubmitHandler }>
                 {errors.map((err, index) => <p key={index}>{err}</p>)}
                 
-                {/* {authorNotFound ? <h2>{authorNotFound}</h2> : null} */}
 
                 <div>
                     <label>Name: </label>

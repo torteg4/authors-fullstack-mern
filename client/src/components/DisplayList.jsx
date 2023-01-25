@@ -30,16 +30,30 @@ const DisplayList = (props) => {
 
     // !SORTING FUNCTION ATTEMPT----------------------------
     useEffect(() => {
-        const sortAlphabetically = authorName => {
-            const authorNames = {
-                name: 'name',
-            };
-    
-            const sortAuthors = authorNames[authorName];
+        const sortAlphabetically = sortFilter => {
+            // const authorNames = {
+            //     name: 'name',
+            // };
+            // console.log(authorName)
+            // const sortAuthors = authorNames[authorName];
             const sorted = [...authorList].sort((a, b) => {
-                if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
-                if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
-                return 0;
+                if (sortType === "ascending") {
+                    if (a.name.toLowerCase() < b.name.toLowerCase()) 
+                        {return -1}
+                    else if (a.name.toLowerCase() < b.name.toLowerCase()) 
+                        {return 1}
+                    else 
+                        return 0;
+
+                } else if (sortType === "descending") {
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) 
+                        {return -1}
+                    else if (a.name.toLowerCase() < b.name.toLowerCase()) 
+                        {return 1}
+                    else 
+                        return 0;
+                } else return 0;
+
             }
             )
             console.log(sorted)
