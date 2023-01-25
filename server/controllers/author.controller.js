@@ -32,7 +32,7 @@ module.exports = {
         .then((updatedAuthor) => res.json(updatedAuthor))
             .catch(err =>
                 res.status(400).json(err)
-            )
+        );
     },
 
     destroy: (req,res) => {

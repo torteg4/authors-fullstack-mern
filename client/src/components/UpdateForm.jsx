@@ -8,13 +8,17 @@ const UpdateForm = (props) => {
     const [name, setName] = useState("");
     const navigate = useNavigate();
     const [errors, setErrors] = useState([]); 
+    // const [authorNotFound, setAuthorNotFound] = useState("");
 
     useEffect(() => {
         axios.get("http://localhost:8000/api/authors/" + id)
             .then((res) => {
                 setName(res.data.name)
             })
-            .catch((err) => console.log("Something went wrong with updating through button", err))
+            .catch((err) => {
+                console.log("Something went wrong with updating through button", err);
+                // setAuthorNotFound("No author found with that id");
+            });
     }, []);
 
 
@@ -49,6 +53,8 @@ const UpdateForm = (props) => {
             <form onSubmit = { onSubmitHandler }>
                 {errors.map((err, index) => <p key={index}>{err}</p>)}
                 
+                {/* {authorNotFound ? <h2>{authorNotFound}</h2> : null} */}
+
                 <div>
                     <label>Name: </label>
                     <input 

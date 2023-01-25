@@ -5,22 +5,20 @@ import { Link } from 'react-router-dom';
 
 const DisplayList = (props) => {
 
-    const [authorList, setAuthorList] = useState([])
+    const [authorList, setAuthorList] = useState([]);
+    const [sortType, setSortType] = useState('name');
 
     useEffect(() => {
         axios.get("http://localhost:8000/api/authors")
-            //!first do this to make sure you're pulling the correct data
-            // .then((res) => console.log(res.data)) 
-            //!once you confirm you are pulling the correct info from console.log, then setList
             .then((res) => setAuthorList(res.data))
             .catch((err) => console.log(err))
     }, []);
+
 
     const deleteAuthor = (authorId) => {
         axios.delete("http://localhost:8000/api/authors/" + authorId)
         .then(() => {
             console.log("Successfully deleted from the backend")
-            // !HAVING THIS FUNCTION WILL UPDATE THE LIST IN REAL TIME SO YOU DONT NEED TO RELOAD
             removeFromDom(authorId)
         })
         .catch (err => console.log("Something went wrong with deleting on displayList", err))
@@ -30,12 +28,38 @@ const DisplayList = (props) => {
         setAuthorList(authorList.filter( a => a._id !== authorId))
     };
 
+    // !SORTING FUNCTION ATTEMPT----------------------------
+    useEffect(() => {
+        const sortAlphabetically = authorName => {
+            const authorNames = {
+                name: 'name',
+            };
     
-
+            const sortAuthors = authorNames[authorName];
+            const sorted = [...authorList].sort((a, b) => {
+                if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+                if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+                return 0;
+            }
+            )
+            console.log(sorted)
+            setAuthorList(sorted)
+        };
+        sortAlphabetically(sortType);
+    }, [sortType])
+        // b[sortAuthors] - a[sortAuthors]);
+// ---------------------------------------------------------
 
     return (
         <div className="container ">
         <>
+            <div>                      
+                <select onChange={(e) => setSortType(e.target.value)}>
+                        <option value="ascending">Sort A-Z</option>
+                        <option value="descending">Sort Z-A</option>
+                </select>
+            </div>
+
             <Link to={"/authors/new"}> Add an author</Link>
 
             <table class="table table-bordered">
